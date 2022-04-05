@@ -11,5 +11,10 @@ Technologies Used:
 * Web3.js (EVM Polygon)
 * node.js
 * Solidity
+* Remix
+* Truffle
+* OpenZeppelin
+* IPFS
+* Pinata
 
 

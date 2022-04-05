@@ -1,0 +1,3009 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+	<script type="https://cdn.jsdelivr.net/npm/web3-utils@1.6.1/lib/index.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/ipfs@0.55.2/dist/index.min.js"></script>
+	<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+	<script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>	
+	
+	
+<style>
+body {
+	background-color: black;
+	font-family: Arial;
+}
+
+#masterdiv {
+  position: static;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  background-color: black;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#coverdiv {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 500%;
+  background-color: gray;
+  opacity: 0.3;
+}
+
+#buydiv {
+  display: none;
+  position: absolute;
+  width: 320px;
+  height: 365px;
+  border: transparent;
+  z-index: 2;
+}
+#solddiv {
+  display: none;
+  position: absolute;
+  width: 400px;
+  height: 300px;
+  border: transparent;
+  z-index: 2;
+}
+
+.theheader {
+  overflow: hidden;
+  margin-top: -8px;
+  width: auto;
+  height: auto;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  float: left;
+  width: auto;
+  height: 47px;
+  margin-top: -2px;
+}
+
+#tab2 {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  width: auto;
+  height: 47px;
+  margin-top: -2px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 12px 14px;
+  transition: 0.3s;
+  font-size: 18.5px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: rgb(137, 180, 161);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: rgb(137, 180, 161);
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid black;
+  border-top: none;
+}
+
+#btnmeta {
+  background-color: #0e584d;
+  color: white;
+  font-size: 12px;
+  padding: 0px 0px;
+  border: 1px solid black;
+  cursor: pointer;
+  width: 70px;
+  height: 25px;
+  margin-left: 50px;
+  margin-top: -9px;
+  border-radius: 5px;
+}
+
+#btnhelp {
+  overflow: hidden;
+  background-color: blue;
+  color: white;
+  font-size: 12px;
+  padding: 0px 0px;
+  border: 1px solid black;
+  cursor: pointer;
+  width: 70px;
+  height: 25px;
+  margin-left: 10px;
+  margin-top: -9px;
+  border-radius: 5px;
+}
+
+.btnpurchase {
+  position: relative;
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 0px;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  margin-left: 30px;
+  margin-top: 34px;
+  opacity: 0.8;
+  font-size: 20px;
+}
+
+#btnclose {
+  position: absolute;
+  background-color: #c94444;
+  color: white;
+  display: inline-block;
+  padding: 0px 0px;
+  border: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-left: 282px;
+  margin-top: -3px;
+}
+#btnclose2 {
+  position: absolute;
+  background-color: #c94444;
+  color: white;
+  display: inline-block;
+  padding: 0px 0px;
+  border: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-left: 282px;
+  margin-top: -3px;
+}
+
+.initlabel {
+  position: relative;
+  margin-left: 83px;
+  margin-top: -40px;
+}
+.initlabel2 {
+  position: relative;
+  margin-left: 15px;
+  margin-top: -70px;
+}
+.initlabel3 {
+  position: relative;
+  margin-left: 50px;
+  margin-top: -40px;
+}
+
+#metalink {
+  position: absolute;
+  display: inline-block;
+  margin-left: 8px;
+  width: 87%;
+}
+#copylinkbtn {
+  position: absolute;
+  background-color: transparent;
+  color: blue;
+  padding: 0px 0px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 520;
+  width: 80px;
+  height: 25px;
+  margin-left: 105px;
+  margin-top: -27px;	
+}
+
+/* Add styles to the form container */
+.form-container {
+  position: absolute;
+  width: 300px;
+  height: 340px;
+  padding: 10px;
+  background-color: white;
+  border: 4px solid #e60b0b;
+  margin-left: 0px;
+  margin-top: 0px;	
+}
+
+/* Add some hover effects to buttons */
+.form-container .btnsend .btnpurchase:hover {
+  opacity: 1;
+}
+
+/*add effects to the page controls*/
+.audinfologo:hover,
+.audinfologo:focus, 
+.vidinfologo:hover,
+.vidinfologo:focus,
+.imginfologo:hover,
+.imginfologo:focus,
+.audbuylogo:hover,
+.audbuylogo:focus, 
+.vidbuylogo:hover,
+.vidbuylogo:focus,
+.imgbuylogo:hover,
+.imgbuylogo:focus,
+.imageseebackbtn:hover,
+.imageseebackbtn:focus,
+.imageseefrontbtn:hover,
+.imageseefrontbtn:focus,
+.imageverifybtn:hover,
+.imageverifybtn:focus,
+.audioseebackbtn:hover,
+.audioseebackbtn:focus,
+.audioseefrontbtn:hover,
+.audioseefrontbtn:focus,
+.videoseebackbtn:hover,
+.videoseebackbtn:focus,
+.videoseefrontbtn:hover,
+.videoseefrontbtn:focus,
+.imagezoombtn:hover,
+.imagezoombtn:focus,
+.videozoombtn:hover,
+.videozoombtn:focus,
+.myclose:hover,
+.myclose:focus
+{
+  	color: #bbb;
+  	text-decoration: none;
+ 	cursor: pointer;
+}
+
+/* audio controls*/
+.audioseebackbtn {
+	position: relative;
+    top: 137pt;
+    left: 22pt; 
+	border-radius: 5px;
+}
+
+.audioseefrontbtn {
+	position: relative;
+    top: 424px;
+    left: 215px; 
+	border-radius: 5px;
+}
+
+.audcopyrightlogo {
+	position: relative;
+    top: 194px;
+    left: -125px; 
+	width: 55px;
+	height: 29px;
+}
+
+.audinfologo {
+	position: relative;
+    top: 193px;
+    left: 122px; 
+	width: 30px;
+	height: 30px;
+}
+
+.audbuylogo {
+	position: relative;
+    top: 198px;
+    left: 32px; 
+	width: 48px;
+	height: 40px;
+}
+
+.playinglogo {
+	position: relative;
+    top: 131px;
+    left: 80px; 
+	width: 400px;
+	height: 200px;
+	visibility: hidden;
+}
+
+.audcontrols {
+	position: relative;
+ 	width: 300px;
+ 	height: 35px;
+  	top: 249px;
+	left: -1px;
+	background-color: rgb(219, 206, 206);
+	border: 1px solid black;
+}
+
+.audcontrolsplaybtn {
+	position: relative;
+	left: 10pt;
+	top: 0pt;
+	width: 20pt;
+  	height: 20pt;
+}
+
+.audcontrolspausebtn {
+	position: relative;
+	left: 30pt;
+	top: 0pt;
+	width: 20pt;
+  	height: 20pt;
+}
+
+.audiocanvas {
+    float: left;
+    clear: none;
+	margin-top: -288px;
+	width: 300px;
+	height: 250px;
+	background: rgb(20, 20, 20);
+	outline: black 1px solid;
+	z-index: 100;
+}
+
+.audiovid {
+    float: left;
+    clear: none;
+	width: 300px;
+	height: 250px;
+	margin-top: -277px;
+	outline: black 1px solid;	
+	background: rgb(20, 20, 20);	
+	object-fit: cover;
+}
+ 
+/* image controls*/
+.imgcopyrightlogo {
+	position: relative;
+    top: 435px;
+    left: -90px; 
+	width: 55px;
+	height: 29px;
+}
+
+.imginfologo {
+	position: relative;
+    top: 435px;
+    left: 155px; 
+	width: 30px;
+	height: 30px;
+}
+
+.imgbuylogo {
+	position: relative;
+    top: 439px;
+    left: 66px; 
+	width: 48px;
+	height: 40px;
+}
+
+.imageseebackbtn {
+	position: relative;
+	left: 65px;
+	top: 425px;
+	border-radius: 5px;
+}
+
+.imageseefrontbtn {
+	position: relative;
+	left: 215px;
+	top: 424px;
+	border-radius: 5px;
+}
+
+.imagecanvas {
+	margin-top: -46px;
+	background: rgb(20, 20, 20);
+	outline: black 2px solid;
+}
+
+.imageverifybtn {
+	position: relative;
+	left: 40px;
+	top: 424px;
+	border-radius: 5px;
+}
+
+.imagezoombtn {
+	position: relative;
+	left: 204pt;
+	top: 174pt;
+	width: 14pt;
+  	height: 14pt;
+}
+
+/* video controls*/
+.vidcopyrightlogo {
+	position: relative;
+    top: 398px;
+    left: -151px; 
+	width: 55px;
+	height: 29px;
+}
+
+.vidinfologo {
+	position: relative;
+    top: 398px;
+    left: 92px; 
+	width: 28px;
+	height: 30px;
+}
+
+.vidbuylogo {
+	position: relative;
+    top: 403px;
+    left: 4px; 
+	width: 48px;
+	height: 40px;
+}
+
+.videoseebackbtn {
+	position: relative;
+    top: 388px;
+    left: 4px; 
+	border-radius: 5px;
+}
+
+.videoseefrontbtn {
+	position: relative;
+    top: 424px;
+    left: 215px; 
+	border-radius: 5px;
+}
+
+.vidcontrols {
+	position: relative;
+ 	width: 300px;
+ 	height: 35px;
+  	top: 252px;
+	left: -1px;
+	background-color: rgb(219, 206, 206);
+	border: 1px solid black;
+}
+
+.vidcontrolsplaybtn {
+	position: relative;
+	left: 0pt;
+	top: 155pt;
+	width: 20pt;
+  	height: 20pt;
+}
+
+.vidcontrolspausebtn {
+	position: relative;
+	left: 20pt;
+	top: 155pt;
+	width: 20pt;
+  	height: 20pt;
+}
+
+.videozoombtn {
+	position: relative;
+	left: 195pt;
+	top: 157pt;
+	width: 22pt;
+  	height: 22pt;
+}
+
+/* set properties of the main div on the pages*/
+.myimage, .myvideo, .myaudio {
+    display: block;
+    padding: 15px;
+    width: 300px;
+	height: 480px;
+    border-radius: 10px;
+    border: 2px solid black;
+    background: white;
+	-webkit-perspective: 1000px;
+	perspective: 1000px;
+	float: left;
+	clear: none;
+	margin: 1em;
+	margin-bottom: 75px;
+	margin-top: -40px;		
+}
+
+/* set properties of the flip cards on the pages*/
+.flip-card-inner {
+  	position: relative;
+  	width: 100%;
+  	height: 100%;
+  	text-align: left;
+	-webkit-transition: transform 0.8s;
+	transition: transform 0.8s;
+  	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.flip-card-front, .flip-card-back {
+	position: absolute;
+  	width: 100%;
+  	height: 100%;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.flip-card-front {
+	z-index: 2;
+  	background-color: rgb(219, 205, 205);
+	border: 1px solid black;
+}	
+
+.flip-card-back {
+	top: -4px;
+	background-color: rgb(219, 205, 205);
+	border: 1px solid black;
+	-webkit-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
+
+.myimage2div {
+	position: fixed; /* Stay in place */
+  	z-index: 1; /* Sit on top */
+  	padding-top: 100px; /* Location of the box */
+  	left: 0;
+  	top: 0;
+  	width: 100%;
+  	height: 100%;
+  	/*overflow: auto;  Enable scroll if needed */
+  	background-color: rgb(0,0,0); 
+  	/*background-color: rgba(0,0,0,0.9);  Black w/ opacity */
+}
+
+.zoomImage {
+	position: relative;
+	left: 300pt; 
+    margin-top: -60pt;
+  	display: block;
+	max-height: 90%;
+}
+
+/*image of the metadata on the backpage*/
+.ipfsimage {
+	position: relative;
+    top: 326pt;
+    left: -105pt; 
+	width: 70px;
+	height: 40px;
+}
+
+/*video element for video nfts*/
+.embedvid {
+    float: left;
+    clear: none;
+	width: 300px;
+	height: 253px;
+	margin-top: -84px;
+	outline: black 1px solid;	
+	background: rgb(20, 20, 20);	
+	object-fit: cover;
+}
+
+.embedvid2 {
+    display: inline-block;
+    clear: none;
+	margin-top: -100px;
+	margin-left: 25%;
+	height: 100%;
+	outline: black 1px solid;	
+	background: rgb(20, 20, 20);	
+	object-fit: cover;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.myclose {
+  	position: absolute;
+  	bottom: 120px;
+  	right: 20px;
+  	width: 20pt;
+  	height: 20pt;
+}
+
+.image3d {
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    top: 0;
+    border: none;
+}
+
+p.polygon_style {
+    color: rgb(168, 29, 48);
+	text-align: left;
+    margin-left: 50px;
+}
+
+</style>
+<div>
+	<!--Header-->
+	<img src="https://blocklagoon.mypinata.cloud/ipfs/QmcZUjA58snKkBdi7PKTx9sZaKKkyJJxno4a8JR228v5h1" class="theheader"/>   <!--BLG-->
+	
+	<!--tab control-->
+	<div class="tab">
+		<button class="tablinks" id='btnone' onclick="openNFT(event, 1)">Audio NFTs</button>
+		<button class="tablinks" id='btntwo' onclick="openNFT(event, 2)">Video NFTs</button>
+		<button class="tablinks" id='btnthree' onclick="openNFT(event, 3)">Image NFTs</button>
+	</div>
+	<div id="tab2">
+		<span><p class="polygon_style">All NFTs are hosted in <strong>audited</strong> smart contracts on the <strong>Polygon</strong> blockchain.
+			<button id='btnmeta' onclick="openMeta()">Metaverse</button><button id='btnhelp' onclick="openHelp()">Help</button></p></span>
+	</div>
+
+	<div id="masterdiv"><p style="text-indent: 60px; color: goldenrod";>&nbsp &nbsp &nbsp &nbsp Select an NFT type to display</p></div>
+
+	<div id="1" class="tabcontent"></div>
+	<div id="2" class="tabcontent"></div>
+	<div id="3" class="tabcontent"></div>
+</div>
+<body>
+<script>
+	//TO DO BEFORE RUNNING
+	//set the blockchain (main/test   ethereum/polygon)
+	//set the page header image
+	//set the BLG seed account
+	//set the contract
+	//change txhash link to appropriate block explorer
+	//set the metaverse link (openMeta())
+	//set the collection name (in setPages() function)
+	//set the artist bio/image+
+
+	//below block gets current price of matic and eth - https://docs.chain.link/docs/get-the-latest-price/
+	const aggregatorV3InterfaceABI = [{ "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "description", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint80", "name": "_roundId", "type": "uint80" }], "name": "getRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "latestRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "version", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }]
+	var priceMatic, priceEth
+
+	//WHEN ON POLYGON MAINNET
+	/*const rpcURL = 'https://rpc-mumbai.maticvigil.com/v1/6d15630b7453696102ad39f4b6fbf678ec4244be';   //polygon mumbai
+	const web3a = new Web3(rpcURL);
+	const addr = "0x0715A7794a1dc8e42615F059dD6e406A6594651A";   //eth/usd
+	const priceMumbai = new web3a.eth.Contract(aggregatorV3InterfaceABI, addr);
+	priceMumbai.methods.latestRoundData().call()
+	.then((roundData) => {
+		priceEth = roundData[1]/100000000;   //one matic = this many dollars
+		console.log(roundData[1]/100000000)
+	})
+
+	const rpcURL2 = 'https://rpc-mainnet.maticvigil.com/v1/6d15630b7453696102ad39f4b6fbf678ec4244be';   //polygon mainnet
+	const web3 = new Web3(rpcURL2);
+	const addr2 = "0xAB594600376Ec9fD91F8e885dADF0CE036862dE0";   //matic/usd
+	const priceMain = new web3.eth.Contract(aggregatorV3InterfaceABI, addr2);
+	priceMain.methods.latestRoundData().call()
+    .then((roundData) => {
+		priceMatic = roundData[1]/100000000; 
+		console.log(roundData[1]/100000000)
+    })*/
+
+	//WHEN ON POLYGON MUMBAI
+	const rpcURL = 'https://rpc-mainnet.maticvigil.com/v1/6d15630b7453696102ad39f4b6fbf678ec4244be';   //polygon mainnet
+	const web3a = new Web3(rpcURL);
+	const addr = "0xAB594600376Ec9fD91F8e885dADF0CE036862dE0";   //matic/usd
+	const priceMain = new web3a.eth.Contract(aggregatorV3InterfaceABI, addr);
+	priceMain.methods.latestRoundData().call()
+    .then((roundData) => {
+		priceMatic = roundData[1]/100000000; 
+		console.log('Current Matic Price: ' + roundData[1]/100000000)
+    })
+
+	const rpcURL2 = 'https://rpc-mumbai.maticvigil.com/v1/6d15630b7453696102ad39f4b6fbf678ec4244be';   //polygon mumbai
+	const web3 = new Web3(rpcURL2);
+	const addr2 = "0x0715A7794a1dc8e42615F059dD6e406A6594651A";
+	const priceMumbai = new web3.eth.Contract(aggregatorV3InterfaceABI, addr2);
+	priceMumbai.methods.latestRoundData().call()
+	.then((roundData) => {
+		priceEth = roundData[1]/100000000;   //one matic = this many dollars
+		console.log('Current Eth Price: ' + roundData[1]/100000000)
+	})
+	
+	//address of the contract we're connecting to
+	const contract_address = '0x0e64ffd67dAbdB17A451D6838Cbe8aC77a95856c';   
+	
+	//create an instance of the contract
+	const contract = new web3.eth.Contract(theABI(), contract_address);
+	const ipfs_gateway = 'https://blocklagoon.mypinata.cloud/ipfs/';
+
+	var sourceFiles1 = [], sourceFiles2 = [], sourceFiles3 = [];
+	var info1 = [], info2 = [], info3 = [];
+	var vrFiles = [];
+    var sourceArt1 = [];
+	var theJSONs1 = [], theJSONs2 = [], theJSONs3 = [];
+	var jsonArray1 = [[],[],[],[],[],[],[],[],[],[]], jsonArray2 = [[],[],[],[],[],[],[],[],[],[]], jsonArray3 = [[],[],[],[],[],[],[],[],[],[]];
+	var tokenStats1 = [], tokenStats2 = [], tokenStats3 = [];
+	var txHashes1 = [], txHashes2 = [], txHashes3 = [];
+    var burnsArray = [];
+	var soundArray = [];
+	var videoArray = [];
+	var soldArray = [], soldArray2 = [];
+	var theType;
+	
+    contract.methods.getBurners().call(function(error, result){
+		if(!error) {
+			burnsArray = result.split('||');
+			//if there are no burners at all then burnsArray.length will still be 1
+			//if there are burners the burnsArray index starts at 1  (0 is empty)
+			//console.log	('burnsArray.length = ' + burnsArray.length);
+		} 
+	});		
+
+	$(document).ready(function(){
+   		$('#videoElementID').bind('contextmenu',function() { return false; });
+	});
+
+	var myCreate1 = createIpfs((resolve, reject) => {
+		resolve('success');
+	});
+
+	function pageNFT(category, myJSON, myStats) {
+		contract.methods.getTokens(category).call(function(error, result){
+		if(!error) {
+			contract.methods.getSold().call(function(error, result2){
+				if(!error) {
+						var array1 = [], array2 = [], seriesArray = [], namesArray = [];
+			    		var firstArray = result.split('||');
+			    		for (var i = 0; i < firstArray.length; i++) {    
+				    		var secondArray = firstArray[i].split('|');
+							array1.push(secondArray[3] + '|' + secondArray[0] + '|' + secondArray[2] + '|' + secondArray[1]);
+							namesArray.push(secondArray[1]);   //nft name
+                		} 
+
+						//remove any possible dups in result2 - reason: secondary sales could create a dup
+						var soldIDs = [...new Set(result2)]
+						soldArray = soldIDs;  //global array (soldArray) = sold nfts
+
+						//an array of unique nft names - remove dups
+						var uniqueNames = [...new Set(namesArray)]
+					
+						//get all 1/1 nfts (sold or not) and put em in array2
+						for (var xx = 0; xx < array1.length; xx++) {
+							var q = array1[xx].indexOf('|');
+							var q2 = array1[xx].indexOf('|', q + 1);
+							var q3 = array1[xx].indexOf('|', q2 + 1);   //third pipe
+
+							//if(array1[xx].substr(q2+1, array1[xx].length - q2).includes('1/1')){
+							if(array1[xx].substr(q2+1, q3-(q2+1)) == '1/1'){
+								array2.push(array1[xx]);
+							} else {seriesArray.push(array1[xx]);}
+							
+							//if(!array1[xx].substr(q2+1, array1[xx].length - q2).includes('1/1')){
+							//	seriesArray.push(array1[xx]);
+							//}
+						}
+
+						//get any nfts that are part of a series  ie  are not 1/1 
+						var array3 = []
+						for (var y = 0; y < seriesArray.length; y++) {
+							var q = seriesArray[y].indexOf('|');   //gets first pipe
+							var q2 = seriesArray[y].indexOf('|', q + 1);   //gets second pipe
+							var bx = seriesArray[y].substr(q2 +1, seriesArray[y].length - q2);  //the edition eg. '1/2'
+							var gx = seriesArray[y].substr(0, q);       //gets the token id
+						
+							//remove sold nfts from seriesArray and put result into array3
+							if (soldIDs.includes(gx) == false){  //if the token id is not found in sold array
+								//not found means it can be possible added to array2
+								//add to a new array which contains array 2 candidates
+								array3.push(seriesArray[y]);
+							} 
+						}
+
+						//for each series add the lowest unsold edition
+						for (var kk = 0; kk < uniqueNames.length; kk++) {
+							var lowt = 10000;
+							var addem = '';
+							for (var k = 0; k < array3.length; k++) {
+								var q = array3[k].indexOf('|');  
+								var q2 = array3[k].indexOf('|', q + 1); 
+								var q3 = array3[k].indexOf('|', q2 + 1);  
+								var q4 = array3[k].indexOf('|', q3 + 1);   
+								var bx = array3[k].substr(q3+1, array3[k].length - q3);  //the edition eg. '1/2'
+								var gx = array3[k].substr(q2+1, 3);   //fix this
+								
+								if (bx == uniqueNames[kk] && gx.substring(0, gx.indexOf('/')) < lowt){
+									lowt = gx.substring(0, gx.indexOf('/'));
+									addem = uniqueNames[kk];
+								} else {lowt = lowt}
+							}
+							
+							for (var w = 0; w < array3.length; w++) {
+								var q = array3[w].indexOf('|');  
+								var q2 = array3[w].indexOf('|', q + 1);  
+								var bx = array3[w].substr(q2+1, 3);  //the edition eg. '1/2'
+								var gx = bx.substring(0, bx.indexOf('/'))
+
+								if (array3[w].includes(addem) && array3[w].includes(lowt + '/')){ 
+									array2.push(array3[w]);
+								}
+							} 
+						}
+						
+						//add to myJSON
+						for (var x = 0; x < array2.length; x++) {
+							var b = array2[x].indexOf('|');
+							var b2 = array2[x].indexOf('|', b + 1);
+							var b3;
+							if(array2[x].substring(9, b2).includes('/')){
+								b3 = array2[x].substring(10, 56);
+							} else {b3 = array2[x].substring(9, b2);}
+							
+							//console.log(b3)
+							myJSON.push(b3);
+							for (var b = 0; b < firstArray.length; b++) {
+								if(firstArray[b].includes(array2[x].substring(9, b2))){
+									myStats.push(firstArray[b]);
+								}
+							}
+               		    } 
+					setNFT(category);
+				} else {console.log(error)}
+			});
+		} else {console.log(error)}	
+		});
+    }
+
+	pageNFT(3, theJSONs3, tokenStats3);
+	pageNFT(2, theJSONs2, tokenStats2);
+	pageNFT(1, theJSONs1, tokenStats1);
+
+	function setNFT(theCat){
+		myCreate1.then((value) => {
+			if (theCat == 3){
+				var myIndex3 = 0;
+				for (var v = 0; v < theJSONs3.length; v++) {
+					var getCID3 = get_metadata(value, theJSONs3[v], (resolve, reject) => {
+						resolve('Success');
+					});
+					getCID3.then((value) => {
+						//console.log(value.Name + ',  ' + value.Edition.substring(0, 1))
+						var one = value.Image.indexOf('Qm');
+						var meeko = one + 46;
+						if (value.Watermark == "no watermarked image") {
+							sourceFiles3.push(ipfs_gateway + value.Image.substring(one, meeko));
+						} else {
+							sourceFiles3.push(ipfs_gateway + value.Watermark.substring(one, meeko));
+						}
+						info3.push(ipfs_gateway + value.Copyright.substring(one, meeko));
+						jsonArray3[myIndex3][0] = value.Name;   //Name of the nft
+						jsonArray3[myIndex3][1] = value.Description;
+						jsonArray3[myIndex3][2] = value.Created;
+						jsonArray3[myIndex3][3] = value.Creator;
+                		jsonArray3[myIndex3][4] = value.Copyright;
+						jsonArray3[myIndex3][5] = value.Edition;
+				
+						myIndex3++; 
+					});				
+				}
+			} else if (theCat ==2){
+				var myIndex2 = 0;
+				for (var z = 0; z < theJSONs2.length; z++) {
+					var getCID2 = get_metadata(value, theJSONs2[z], (resolve, reject) => {
+						resolve('Success');
+					});
+					getCID2.then((value) => {
+						var one = value.Image.indexOf('Qm');
+						var meeko = one + 46;
+
+						sourceFiles2.push(ipfs_gateway + value.Image.substring(one, meeko));
+						info2.push(ipfs_gateway + value.Copyright.substring(one, meeko));
+
+						//get the vr file
+						if (value.Name.includes('-vr') == true) {
+							vrFiles.push(ipfs_gateway + value.Artwork.substring(one, meeko));
+						} else {vrFiles.push('plug')}
+						jsonArray2[myIndex2][0] = value.Name;   //Name of the NFT
+						jsonArray2[myIndex2][1] = value.Description;
+						jsonArray2[myIndex2][2] = value.Created;
+						jsonArray2[myIndex2][3] = value.Creator;
+                		jsonArray2[myIndex2][4] = value.Copyright;
+						jsonArray2[myIndex2][5] = value.Edition;
+						myIndex2++; 
+					});				
+				}
+			} else if (theCat ==1){
+				var myIndex1 = 0;
+				for (var q = 0; q < theJSONs1.length; q++) {
+					var getCID1 = get_metadata(value, theJSONs1[q], (resolve, reject) => {
+						//resolve('Success');	
+					});
+					getCID1.then((value) => {
+						var one = value.Image.indexOf('Qm');
+						var meeko = one + 46;
+			   			sourceFiles1.push(ipfs_gateway + value.Animation.substring(one, meeko));
+						info1.push(ipfs_gateway + value.Copyright.substring(one, meeko));
+                		sourceArt1.push(ipfs_gateway + value.Artwork.substring(one, meeko));
+						jsonArray1[myIndex1][0] = value.Name;   //Name of the NFT
+						jsonArray1[myIndex1][1] = value.Description;
+						jsonArray1[myIndex1][2] = value.Created;
+						jsonArray1[myIndex1][3] = value.Creator;
+                		jsonArray1[myIndex1][4] = value.Copyright;
+						jsonArray1[myIndex1][5] = value.Edition;
+						myIndex1++; 
+					});
+				}
+			}
+		});
+	}
+
+	var isBought;
+	//create html elements on the fly based on number of nfts in smart contract
+	function openNFT(evt, NFTname) {
+		//set for use outside of this function
+		theType = NFTname;
+
+		//configure the tab control at top of page
+		var p, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tabcontent");
+  		for (p = 0; p < tabcontent.length; p++) {
+    		tabcontent[p].style.display = "none";
+  		}
+  		tablinks = document.getElementsByClassName("tablinks");
+  		for (g = 0; g < tablinks.length; g++) {
+    		tablinks[g].className = tablinks[g].className.replace(" active", "");
+  		}
+  		document.getElementById(NFTname).style.display = "block";
+ 		evt.currentTarget.className += " active";
+
+		//remove all the divs
+		$('.myaudio').remove();
+		$('.myvideo').remove();
+		$('.myimage').remove();
+		
+		//set var for number of NFTs in selected category
+		//and create an array of txHashes for each category
+		var once;
+		if (NFTname == 1) {
+			once = theJSONs1.length;
+			for (var z = 0; z < once; z++) {
+				var res = tokenStats1[z].split('|');
+
+				txHashes1.push(res[5]);
+			}
+		} else if (NFTname == 2){
+			once = theJSONs2.length;
+			for (var k = 0; k < once; k++) {
+				var res2 = tokenStats2[k].split('|');
+				txHashes2.push(res2[5]);
+			}
+		} else if (NFTname == 3){
+			once = theJSONs3.length;
+			for (var m = 0; m < once; m++) {
+				var res3 = tokenStats3[m].split('|');
+				txHashes3.push(res3[5]);
+			}
+		}
+				
+		var myID;
+		for (var i = 0; i < once; i++) {
+				//paragraph tag for metadata excluding the description on front page
+				var s1, s1a, s2, s2a, s3, s3a, s4, s4a, s5, s5a, s6, s6a;
+				var span1, span1a, span2, span2a, span3, span3a, span4, span4a, span5, span5a, span6, span6a;
+                var pFront = document.createElement('p');
+				
+				//paragraph tag for description/artist metadata on the back page
+				var s7, s8, s9, s10, span7, span8, span9, span10;
+				var pBack1 = document.createElement('p');
+				var pBack2 = document.createElement('p');
+	
+			if (NFTname == 1) {	
+				//create div that will contain audio control
+				var div = document.createElement('div');
+				div.className = 'myaudio';
+
+				//add audio div to document
+				document.getElementById('masterdiv').appendChild(div);
+				
+				//create container div and append it to outer div
+				var innerDiv = document.createElement('div');
+				innerDiv.className = 'flip-card-inner';
+				myFlip = 'flip' + i;
+				innerDiv.id = myFlip;
+				div.appendChild (innerDiv);
+				
+				//now create the flip-card-front div
+				var frontDiv = document.createElement('div');
+				myID = 'image' + i;
+				frontDiv.id = myID;
+				frontDiv.className = 'flip-card-front';
+				innerDiv.appendChild (frontDiv);
+
+				//create a div to contain audio controls
+				var controlsDiv = document.createElement('div');
+				controlsDiv.className = 'audcontrols';
+				frontDiv.appendChild (controlsDiv);
+			
+				//create the create back-card-div
+				var backDiv = document.createElement('div');
+				backDiv.className = 'flip-card-back';
+				innerDiv.appendChild (backDiv);
+
+				soundArray.push(document.createElement('audio'));
+				soundArray[i].id = 'sound' + i;
+				//sound.type = 'audio/wav';
+				soundArray[i].src = sourceFiles1[i];
+				soundArray[i].crossOrigin = "anonymous";
+        
+				var res = tokenStats1[i].split('|');
+
+				//add the active playing animated gif
+				var playing_img = document.createElement('img');
+				playing_img.className = 'playinglogo';
+				playing_img.id = 'playing' + i;
+				playing_img.src = ipfs_gateway + 'QmPK4Xu3W73GCwWTPuDA6bKpMhRex31wn2WtzNsJfkx99u';	
+				frontDiv.appendChild(playing_img);	
+
+				//add the audio PLAY control
+				var controls_play = document.createElement('img');
+				controls_play.id = i;
+				controls_play.className = 'audcontrolsplaybtn';
+				controls_play.src = ipfs_gateway + 'QmTwRbUHFkpqWmhSa4tCDMpjxhNznGMk8sB2yLxHyJaenW';
+				controls_play.addEventListener('click', controlPlay, true);
+					function controlPlay(e){
+						console.log(this.id)
+						soundArray[this.id].play();
+						document.getElementById('playing' + this.id).style.visibility = 'visible';
+					}
+
+				//add the audio PAUSE control
+				var controls_pause = document.createElement('img');
+				controls_pause.id = i;
+				controls_pause.className = 'audcontrolspausebtn';
+				controls_pause.src = ipfs_gateway + 'QmZA3xRYTS6WELBDhdQwA2B6AN7RTndS46Qik4946PkKpo';
+				controls_pause.addEventListener('click', controlPause, true);
+					function controlPause(e){
+						soundArray[this.id].pause();
+						document.getElementById('playing' + this.id).style.visibility = 'hidden';
+					}
+
+				//add sound sound element and sound controls to frontdiv
+				frontDiv.appendChild(soundArray[i]);
+				frontDiv.appendChild(controls_play);
+				frontDiv.appendChild(controls_pause);
+
+				//create the copyright logo image element
+				var copyright_img = document.createElement('img');
+				crID = 'copyright' + i;
+				copyright_img.id = crID;
+				copyright_img.className = 'audcopyrightlogo';
+				copyright_img.src = ipfs_gateway + 'QmbvfGfgiEUo3jVZrTDHNRBzXpUy8hgceLokeyTgY6Tp2Z';
+
+				//create the info image element
+				var info_img = document.createElement('img');
+				cpID = 'info' + i;
+				info_img.id = cpID;
+				info_img.className = 'audinfologo';
+				info_img.src = ipfs_gateway + 'QmXwWzbs6vsi2qLecmGBSr6fMawwnsJmhHxH4fjtFKra5n';
+				info_img.addEventListener("click", myInfo, false);
+
+				//create the buy dollar image element
+				var buy_img = document.createElement('img');
+				buyID = 'buy' + res[3];
+				buy_img.id = buyID;
+				buy_img.className = 'audbuylogo';
+				buy_img.src = ipfs_gateway + 'QmPyUWM9xUcZDTWoqS6eiJamMpAUGJE4kz4hUMXbdXVDFY';
+				buy_img.addEventListener("click", buyNFT, false);
+		
+				//add elements to front div
+				frontDiv.appendChild(info_img);
+				frontDiv.appendChild(buy_img);
+				frontDiv.appendChild(copyright_img);
+				//call async functions that populates the front and back with content
+				var theJson = 'jsonArray1'
+				var myIndex = parseInt(res[3]) //+ 1;
+				setPages(i, myIndex, pFront, pBack1, jsonArray1, theJson.substring (theJson.length -1));
+
+				//create and add 'See Back' button on frontDiv
+				var back_btn1 = document.createElement('button');
+				backID = 'back' + i;
+				back_btn1.id = backID;
+				back_btn1.className = 'audioseebackbtn';
+				back_btn1.innerHTML = "See Back";
+				back_btn1.addEventListener("click", flipfront, false);
+				frontDiv.appendChild(back_btn1);
+
+				//create and add See Front button on backDiv
+				var btn2 = document.createElement('button');
+				btnID = 'btn' + i;
+				btn2.id = btnID;
+				btn2.className = 'audioseefrontbtn';
+				btn2.addEventListener("click", flipback, false);
+				btn2.innerHTML = "See Front";
+				backDiv.appendChild(btn2);
+
+				//create and add Verify button on frontDiv
+				var vrf1 = document.createElement('button');
+				vrfID = 'vrf' + i;
+				vrf1.id = btnID;
+				vrf1.className = 'imageverifybtn';
+				vrf1.addEventListener("click", txHash1, false);
+				vrf1.innerHTML = "Verify NFT";
+				backDiv.appendChild(vrf1);
+
+				//if the artwork is a video or an image
+				/*if (sourceArt1[i].includes('mp4') == true || sourceArt1[i].includes('mov') == true){	
+					//add video element to document		
+					var vid = document.createElement("VIDEO");
+					var vidID = 'vid' + i;
+					vid.id = vidID;
+					vid.className = 'audiovid';
+					vid.controlsList="nodownload";
+					if (vid.canPlayType("video/mp4")) {
+						vid.setAttribute("src", sourceArt1[i]);
+					} else {
+						vid.setAttribute("src","video/MOV");
+					}  
+					
+					vid.autoplay = "autoplay"
+					vid.loop = "loop"
+					
+					frontDiv.appendChild(vid);
+					
+				} else {*/
+					//artwork is an image
+					drawArt(i, myID);
+				//}	
+
+				//insert image of the metadata on the backpage
+				var ipfs_img = document.createElement('img');
+				ipfs_img.className = 'ipfsimage';
+				ipfs_img.src = ipfs_gateway + 'QmUpbn8hnTAt6LxS1LQ32bdsy3qfFZfjf8K6CsqXHjN2Yu';	
+				backDiv.appendChild(ipfs_img);
+
+            } else if (NFTname == 2){
+				//create div that will contain video control
+				var div = document.createElement('div');
+				div.className = 'myvideo';
+				div.id = 'myvideo' + i;
+
+				//add audio div to document
+				document.getElementById('masterdiv').appendChild(div);
+
+				//create inner div and append it to outer div
+				var innerDiv = document.createElement('div');
+				innerDiv.className = 'flip-card-inner';
+				myFlip = 'flip' + i;
+				innerDiv.id = myFlip;
+				div.appendChild (innerDiv);
+
+				//now create the flip-card-front div
+				var frontDiv = document.createElement('div');
+				myID = 'image' + i;
+				frontDiv.id = myID;
+				frontDiv.className = 'flip-card-front';
+				innerDiv.appendChild (frontDiv);
+
+				//create a div to contain video controls
+				var controlsDiv = document.createElement('div');
+				controlsDiv.className = 'vidcontrols';
+				frontDiv.appendChild (controlsDiv);
+
+				//create the create back-card-div
+				var backDiv = document.createElement('div');
+				backDiv.className = 'flip-card-back';
+				innerDiv.appendChild (backDiv);
+
+				//add video div to document		
+				videoArray.push(document.createElement("VIDEO"));
+				videoArray[i].id = 'video' + i;
+				videoArray[i].className = 'embedvid';
+				videoArray[i].controlsList="nodownload";
+				videoArray[i].loop = 'true;'
+				if (videoArray[i].canPlayType("video/mp4")) {
+					videoArray[i].setAttribute("src", sourceFiles2[i]);
+				} else {
+					videoArray[i].setAttribute("src","movie.ogg");
+				}  			
+				var res = tokenStats2[i].split('|');
+				var isVR = jsonArray2[i][0] + ' [' + res[3] + ']';
+
+				//create and add zoom image button
+				var vid_expand = document.createElement('img');
+				exID = 'vidx' + i;
+				vid_expand.id = exID;
+				vid_expand.className = 'videozoombtn';
+				vid_expand.alt = '';
+				
+				//add zoom or 3d icon
+				if (isVR.includes('-vr') == true) {
+					vid_expand.src = ipfs_gateway+ 'QmZboS7Jj1oALtRUrMpWmzhfdk2qSDpUG6V2JRyH19BvkC';
+				} else {
+					vid_expand.src = ipfs_gateway + 'Qma8iwJUrWC7eG5BUs2awcPEA1UJ2DtfnqWxJrTn99VahL';
+				}
+					
+				vid_expand.addEventListener("click", myVideo2, false);
+				frontDiv.appendChild(vid_expand);
+		
+				//add the video PLAY control
+				var video_play = document.createElement('img');
+				video_play.id = i;
+				video_play.className = 'vidcontrolsplaybtn';
+				video_play.src = ipfs_gateway + 'QmTwRbUHFkpqWmhSa4tCDMpjxhNznGMk8sB2yLxHyJaenW';
+				video_play.addEventListener('click', videoPlay, true);
+					function videoPlay(e){
+						videoArray[this.id].play();	
+					}
+
+				//add the video PAUSE control
+				var video_pause = document.createElement('img');
+				video_pause.id = i;
+				video_pause.className = 'vidcontrolspausebtn';
+				video_pause.src = ipfs_gateway + 'QmZA3xRYTS6WELBDhdQwA2B6AN7RTndS46Qik4946PkKpo';
+				video_pause.addEventListener('click', videoPause, true);
+					function videoPause(e){
+						videoArray[this.id].pause();
+					}
+
+				//add video element and video controls to frontdiv
+				frontDiv.appendChild(videoArray[i]);
+				frontDiv.appendChild(video_play);
+				frontDiv.appendChild(video_pause);
+
+				//create the copyright logo image element
+				var copyright_img2 = document.createElement('img');
+				crID = 'copyright' + i;
+				copyright_img2.id = crID;
+				copyright_img2.className = 'vidcopyrightlogo';
+				copyright_img2.src = ipfs_gateway + 'QmbvfGfgiEUo3jVZrTDHNRBzXpUy8hgceLokeyTgY6Tp2Z';
+
+				//create the info image element
+				var info_img2 = document.createElement('img');
+				cpID = 'info' + i;
+				info_img2.id = cpID;
+				info_img2.className = 'vidinfologo';
+				info_img2.src = ipfs_gateway + 'QmXwWzbs6vsi2qLecmGBSr6fMawwnsJmhHxH4fjtFKra5n';
+				info_img2.addEventListener("click", myInfo, false);
+
+				//create the buy dollar image element
+				var buy_img2 = document.createElement('img');
+				buyID = 'buy' + res[3];
+				buy_img2.id = buyID;
+				buy_img2.className = 'vidbuylogo';
+				buy_img2.src = ipfs_gateway + 'QmPyUWM9xUcZDTWoqS6eiJamMpAUGJE4kz4hUMXbdXVDFY';
+				buy_img2.addEventListener("click", buyNFT, false);
+
+				//add elements to front div
+				frontDiv.appendChild(info_img2);
+				frontDiv.appendChild(buy_img2);
+				frontDiv.appendChild(copyright_img2);
+				//call async functions that populates the front and back with content
+				var theJson = 'jsonArray2'
+				var myIndex = parseInt(res[3]) //+ 1;
+				//setPages(i, res[3], pFront, pBack1, jsonArray2, theJson.substring (theJson.length -1));
+				setPages(i, myIndex, pFront, pBack1, jsonArray2, theJson.substring (theJson.length -1));
+
+				//create and add 'See Back' button on frontDiv
+				var back_btn2 = document.createElement('button');
+				backID = 'back' + i;
+				back_btn2.id = backID;
+				back_btn2.className = 'videoseebackbtn';
+				back_btn2.innerHTML = "See Back";
+				back_btn2.addEventListener("click", flipfront, false);
+				frontDiv.appendChild(back_btn2);
+
+				//create and add See Front button on backDiv
+				var btn2 = document.createElement('button');
+				btnID = 'btn' + i;
+				btn2.id = btnID;
+				btn2.className = 'videoseefrontbtn';
+				btn2.addEventListener("click", flipback, false);
+				btn2.innerHTML = "See Front";
+				backDiv.appendChild(btn2);
+
+				//create and add Verify button on frontDiv
+				var vrf2 = document.createElement('button');
+				vrfID = 'vrf' + i;
+				vrf2.id = btnID;
+				vrf2.className = 'imageverifybtn';
+				vrf2.addEventListener("click", txHash2, false);
+				vrf2.innerHTML = "Verify NFT";
+				backDiv.appendChild(vrf2);
+
+				//insert image of the metadata on the backpage
+				var ipfs_img = document.createElement('img');
+				ipfs_img.className = 'ipfsimage';
+				ipfs_img.src = ipfs_gateway + 'QmUpbn8hnTAt6LxS1LQ32bdsy3qfFZfjf8K6CsqXHjN2Yu';	
+				backDiv.appendChild(ipfs_img);
+
+			} else if (NFTname == 3){
+				//create outer div
+				var div = document.createElement('div');
+				div.className = 'myimage';
+			
+				//append outer div to body
+				document.getElementById('masterdiv').appendChild(div);
+
+				//create inner div and append it to outer div
+				var innerDiv = document.createElement('div');
+				innerDiv.className = 'flip-card-inner';
+				myFlip = 'flip' + i;
+				innerDiv.id = myFlip;
+				div.appendChild (innerDiv);
+
+				//now create the flip-card-front div
+				var frontDiv = document.createElement('div');
+				myID = 'image' + i;
+				frontDiv.id = myID;
+				frontDiv.className = 'flip-card-front';
+				innerDiv.appendChild (frontDiv);
+
+				//create the create back-card-div
+				var backDiv = document.createElement('div');
+				backDiv.className = 'flip-card-back';
+				innerDiv.appendChild (backDiv);
+
+				//spacer
+				pFront.appendChild (document.createElement("br"));	
+				
+				var res = tokenStats3[i].split('|');
+
+				//create and add zoom image button
+				var img_expand = document.createElement('img');
+				exID = 'imgx' + i;
+				img_expand.id = exID;
+				img_expand.className = 'imagezoombtn';
+				img_expand.alt = '';
+				img_expand.src = ipfs_gateway + 'QmSv2sqCPzW4DRiTf636YFuzMFkZHxiQgQenoreP46s2fa';
+
+				//add zoom icon
+				img_expand.addEventListener("click", myZoom, false);
+				frontDiv.appendChild(img_expand);
+
+				//create the copyright logo image element
+				var copyright_img3 = document.createElement('img');
+				crID = 'copyright' + i;
+				copyright_img3.id = crID;
+				copyright_img3.className = 'imgcopyrightlogo';
+				copyright_img3.src = ipfs_gateway + 'QmbvfGfgiEUo3jVZrTDHNRBzXpUy8hgceLokeyTgY6Tp2Z';
+		
+				//create the info image element
+				var info_img3 = document.createElement('img');
+				cpID = 'info' + i;
+				info_img3.id = cpID;
+				info_img3.className = 'imginfologo';
+				info_img3.src = ipfs_gateway + 'QmXwWzbs6vsi2qLecmGBSr6fMawwnsJmhHxH4fjtFKra5n';
+				info_img3.addEventListener("click", myInfo, false);
+
+				//create the buy dollar image element
+				var buy_img3 = document.createElement('img');
+				buyID = 'buy' + res[3];
+				buy_img3.id = buyID;
+				buy_img3.className = 'imgbuylogo';
+				buy_img3.src = ipfs_gateway + 'QmPyUWM9xUcZDTWoqS6eiJamMpAUGJE4kz4hUMXbdXVDFY';
+				buy_img3.addEventListener("click", buyNFT, false);
+
+				//add elements to frontdiv
+				frontDiv.appendChild(info_img3);
+				frontDiv.appendChild(buy_img3);
+				frontDiv.appendChild(copyright_img3);
+				//call async functions that populates the front and back with metadata content
+				var theJson = 'jsonArray3';
+				setPages(i, res[3], pFront, pBack1, jsonArray3, theJson.substring (theJson.length -1));
+
+				//create and add 'See Back' button on frontDiv
+				var back_btn3 = document.createElement('button');
+				backID = 'back' + i;
+				back_btn3.id = backID;
+				back_btn3.className = 'imageseebackbtn';
+				back_btn3.innerHTML = "See Back";
+				back_btn3.addEventListener("click", flipfront, false);
+				frontDiv.appendChild(back_btn3);
+
+				//create and add See Front button on back page
+				var btn2 = document.createElement('button');
+				btnID = 'btn' + i;
+				btn2.id = btnID;
+				btn2.className = 'imageseefrontbtn';
+				btn2.addEventListener("click", flipback, false);
+				btn2.innerHTML = "See Front";
+				backDiv.appendChild(btn2);	
+
+				//create and add Verify button on frontDiv
+				var vrf3 = document.createElement('button');
+				vrfID = 'vrf' + i;
+				vrf3.id = btnID;
+				vrf3.className = 'imageverifybtn';
+				vrf3.addEventListener("click", txHash3, false);
+				vrf3.innerHTML = "Verify NFT";
+				backDiv.appendChild(vrf3);
+
+				//insert image of the metadata on the backpage
+				var ipfs_img = document.createElement('img');
+				ipfs_img.className = 'ipfsimage';
+				ipfs_img.src = ipfs_gateway + 'QmUpbn8hnTAt6LxS1LQ32bdsy3qfFZfjf8K6CsqXHjN2Yu';	
+				backDiv.appendChild(ipfs_img);
+
+				//draw the image on the canvas
+                drawImg(i, myID);
+			}
+		
+			//add the metadata div inside the parent div (2 p tags:  pBack1 is the description
+			frontDiv.appendChild(pFront);
+			backDiv.appendChild(pBack1);
+			backDiv.appendChild(pBack2);
+		}	
+	}
+
+	function openMeta(){
+		//window.open('https://oncyber.io/blocklagoon');
+		//window.open('https://cyber.xyz/leshea_audio');
+	}
+
+	function openHelp(){
+		alert('Documents are pending.')
+	}
+
+	function flipfront(){
+		var q = document.getElementById(this.id.replace('back', 'flip'));
+    	q.style.transform = 'rotateY(180deg)';
+	}
+
+	function flipback(){
+		var q = document.getElementById(this.id.replace('btn', 'flip'));
+    	q.style.transform = 'rotateY(0deg)';
+	}
+
+	function txHash1() {
+		var goober = this.id.substring(this.id.indexOf('n') + 1, this.id.length);
+		var oneBtn = document.getElementById(this.id);  //btn0, btn1, etc
+		//oneBtn.onclick=window.open('https://rinkeby.etherscan.io/tx/' + txHashes1[goober]);
+		oneBtn.onclick=window.open('https://mumbai.polygonscan.com/tx/' + txHashes1[goober]);
+		//oneBtn.onclick=window.open('https://polygonscan.com/tx/' + txHashes1[goober]);
+	}
+	
+	function txHash2() {
+		var goober = this.id.substring(this.id.indexOf('n') + 1, this.id.length);
+		var twoBtn = document.getElementById(this.id);  //btn0, btn1, etc
+		//twoBtn.onclick=window.open('https://rinkeby.etherscan.io/tx/' + txHashes2[goober]);
+		twoBtn.onclick=window.open('https://mumbai.polygonscan.com/tx/' + txHashes2[goober]);
+		//twoBtn.onclick=window.open('https://polygonscan.com/tx/' + txHashes2[goober]);
+	}
+	
+	function txHash3() {
+		var goober = this.id.substring(this.id.indexOf('n') + 1, this.id.length);
+		var threeBtn = document.getElementById(this.id);  //btn0, btn1, etc
+		//threeBtn.onclick=window.open('https://rinkeby.etherscan.io/tx/' + txHashes3[goober]);
+		threeBtn.onclick=window.open('https://mumbai.polygonscan.com/tx/' + txHashes3[goober]);
+		//threeBtn.onclick=window.open('https://polygonscan.com/tx/' + txHashes3[goober]);
+	}
+
+	//returns a promise to the function (setPages) from which it was called.
+	function getOwner(input) {
+  		return new Promise(resolve => {
+			//get owner from contract
+			contract.methods.getOwner(input).call(function(error, owner){
+				resolve(owner);	
+			});
+  		});
+	}
+
+	function returnPrice(input) {
+  		return new Promise(resolve => {
+			//get price from contract
+			contract.methods.returnTokenPrice(input).call(function(error, price){
+				resolve(price);	
+			});
+  		});
+	}
+
+	function myZoom() {
+		//get index of selected nft
+		var goober = this.id.substring(this.id.indexOf('x') + 1, this.id.length);
+
+		//create div for the image
+		var adiv = document.createElement('div');
+		adiv.id = 'myModal';
+		adiv.className = 'myimage2div';
+		adiv.style.display = "block";
+
+		//create the 3d image element
+		var d_img = document.createElement('model-viewer');
+		d_img.className = 'image3d';
+		d_img.src = vrFiles[goober];
+		d_img.alt = " ";	
+		d_img.setAttribute("camera-controls", "true");
+		d_img.setAttribute("auto-rotate", "true");
+		
+		//create the 2d image element
+		var zoom_img = document.createElement('img');
+		zoom_img.id = 'myImg';
+		zoom_img.className = 'zoomImage';
+		zoom_img.src = sourceFiles3[goober];
+
+		//add the shrink button image
+		var shrink = document.createElement('img');
+		shrink.id = 'myShrink';
+		shrink.src = ipfs_gateway + 'QmXFJz5PLJwTKvQSfGRH2Vx4XJebeYBDANxHpesA85WWyM';
+		shrink.alt = '';
+
+		//create the X close span element
+		var close = document.createElement('span');
+		close.className = "myclose";
+		close.appendChild(shrink);
+		close.onclick = function() {
+  			adiv.style.display = "none";
+		}
+
+		//add the image/vr, close image, and the div
+		//if (d_img.src != 'plug'){
+		//	adiv.appendChild(d_img)
+		//} else {adiv.appendChild(zoom_img)}
+		adiv.appendChild(zoom_img)
+		adiv.appendChild(close)
+		document.body.appendChild(adiv);	
+	}
+
+	function myVideo2() {
+		//get index of selected nft
+		var goober = this.id.substring(this.id.indexOf('x') + 1, this.id.length);
+
+		//create div for the video
+		var bdiv = document.createElement('div');
+		bdiv.id = 'myModal';
+		bdiv.className = 'myimage2div';
+		bdiv.style.display = "block";
+
+		//create the 3d image element
+		var d_img = document.createElement('model-viewer');
+		d_img.className = 'image3d';
+		d_img.src = vrFiles[goober];
+		d_img.alt = " ";	
+		d_img.setAttribute("camera-controls", "true");
+		d_img.setAttribute("auto-rotate", "true");
+
+		if (d_img.src != 'plug'){
+			bdiv.appendChild(d_img)
+		} else {
+			var zoom_vid = document.createElement("VIDEO");
+			zoom_vid.className = "embedvid2";
+			zoom_vid.controlsList="nodownload";
+			zoom_vid.controls = true;
+			zoom_vid.loop = "true";
+			if (zoom_vid.canPlayType("video/mp4")) {
+				zoom_vid.setAttribute("src", sourceFiles2[goober]);
+			} else {
+				zoom_vid.setAttribute("src","movie.ogg");
+			}  		
+			bdiv.appendChild(zoom_vid)
+		}
+		
+		//add the shrink button image
+		var shrink = document.createElement('img');
+		shrink.id = 'myShrink';
+		shrink.src = ipfs_gateway + 'QmXFJz5PLJwTKvQSfGRH2Vx4XJebeYBDANxHpesA85WWyM';
+		shrink.alt = '';
+
+		//create the X close span element
+		var close = document.createElement('span');
+		close.className = "myclose";
+		close.appendChild(shrink);
+		close.onclick = function() {
+  			bdiv.style.display = "none";
+			zoom_vid.pause();
+		}
+		bdiv.appendChild(close)
+		document.body.appendChild(bdiv);	
+	}
+
+	//show the supporting NFT pdf doc 
+	function myInfo() {
+		//get index of selected nft
+		var goober = this.id.substring(this.id.length - 1, this.id.length);
+		var buzz;
+		switch (theType) {
+			case 1: buzz = info1;
+			break;
+			case 2: buzz = info2;
+			break;
+			case 3: buzz = info3;
+			break;
+		}
+
+		//create div for the image
+		var adiv = document.createElement('div');
+		adiv.id = 'myModal';
+		adiv.className = 'myimage2div';
+		adiv.style.display = "block";
+
+		//add the supporting pdf for the NFT
+		var webObj = document.createElement('iframe');
+		webObj.src = buzz[goober]
+		webObj.style.marginTop = '-85px';
+		webObj.style.marginLeft = '290px'
+		webObj.style.width = '60%';
+		webObj.style.height = '720px';
+
+		//add the shrink button image
+		var shrink = document.createElement('img');
+		shrink.id = 'myShrink';
+		shrink.src = ipfs_gateway + 'QmXFJz5PLJwTKvQSfGRH2Vx4XJebeYBDANxHpesA85WWyM';
+		shrink.alt = '';
+		
+		//create the X close span element
+		var close = document.createElement('span');
+		close.className = "myclose";
+		close.appendChild(shrink);
+		close.onclick = function() {
+  			adiv.style.display = "none";
+		}
+		
+		//add the image, close button, and the div
+		adiv.appendChild(webObj)
+		adiv.appendChild(close)
+		document.body.appendChild(adiv);		
+	}
+
+	//create a semi-transparent div for modal effect
+	var coverDiv = document.createElement('div');
+	coverDiv.id = 'coverdiv';
+	document.body.appendChild(coverDiv);
+	coverDiv.style.display = "none";
+
+	//buy an NFT
+	async function buyNFT(e) {
+		//get tokenID of selected nft
+		var goober = this.id.substring(this.id.length - 1, this.id.length);
+		var tokenID = goober;
+		
+		//get the price of the specific token from contract
+		var thePrice = await returnPrice(tokenID);
+		//set cost and value of payable transaction
+		var theCost = await setCost('dollar', priceMatic, priceEth, thePrice);
+
+		coverDiv.style.display = "block";
+		document.body.style.overflowY = 'hidden';   //disable vertical scrolling
+
+		//create the input form container
+		var cursorX = e.pageX;
+		var cursorY = e.pageY;
+		var px = cursorX - 155;
+		var py = cursorY - 675;
+		buyDiv = document.createElement('div');
+		buyDiv.id = 'buydiv';
+		buyDiv.style.left = px.toString() + 'px';
+		buyDiv.style.marginTop = py.toString() + 'px';
+	
+		//create the input form
+		var buyForm = document.createElement('form');
+	 	buyForm.className = 'form-container';
+		//keep the form from reloading the page
+		buyForm.addEventListener('submit', handleForm);
+		function handleForm(event) { 
+			event.preventDefault();
+		} 
+
+		//create the close button
+		var closeBtn = document.createElement('button');
+		closeBtn.id = 'btnclose';
+		closeBtn.innerText = "X";
+		closeBtn.onclick = function() {
+			coverDiv.style.display = "none";
+  			buyForm.style.display = "none";
+			buyDiv.style.display = "none"
+			document.body.style.overflowY = 'visible';
+		}
+		buyForm.appendChild(closeBtn);
+
+		//create label at top of form
+		buyForm.appendChild (document.createElement("br"));
+		var buyLabel = document.createElement('label');
+		buyLabel.className = 'initlabel';
+		buyLabel.innerHTML = 'Purchase NFT';
+		buyLabel.style.fontSize = "20px";
+		buyLabel.style.fontWeight = '700';
+		buyForm.appendChild(buyLabel);
+		buyForm.appendChild (document.createElement("br"));
+		buyForm.appendChild (document.createElement("br"));
+
+		// Create description and link to detailed instructions
+		var buyDesc = document.createTextNode('Open Metamask and set the blockchain network to Matic Mainnet.  Connect to the user account' +
+		' that will be used to purchase the NFT.  The account must have a sufficient Matic balance to complete the purchase.')
+		buySpan = document.createElement('span');
+		buySpan.appendChild(buyDesc);
+		buyForm.appendChild(buySpan);
+		
+		//create label that is the link to 'details' pdf document on ipfs
+		var linkLabel = document.createElement('label');
+		linkLabel.innerHTML = ' See Details';
+		linkLabel.style.color = 'blue';
+		linkLabel.style.fontWeight = 520;
+		linkLabel.onclick = function() {
+			window.open(ipfs_gateway + 'Qmbom1mkU19Y6UKySRPPESnZiG51wtHV1t6a1k1X3jCgyo');
+		}
+		//buyForm.appendChild(linkLabel);
+		buyForm.appendChild (document.createElement("br"));
+		buyForm.appendChild (document.createElement("br"));
+
+		d1 = document.createTextNode('$' + thePrice);
+		d2 = document.createTextNode('(Matic: ' + setCost('matic', priceMatic, priceEth, thePrice) + ')');
+		buySpan1 = document.createElement('span');
+		buySpan2 = document.createElement('span');
+		buySpan1.style.marginLeft = '30%'
+		buySpan2.style.marginLeft = '30%';
+		buySpan1.style.fontSize = '40px';
+		buySpan2.style.fontSize = '17px';
+		buySpan1.style.fontWeight = '700';
+		buySpan2.style.fontWeight = '600';
+		buySpan1.appendChild(d1);
+		buySpan2.appendChild(d2);
+		buyForm.appendChild(buySpan1);
+		buyForm.appendChild (document.createElement("br"));
+		buyForm.appendChild(buySpan2);
+
+		var sendBtn = document.createElement('button');
+		sendBtn.className = 'btnpurchase';
+		sendBtn.innerText = "Submit Purchase";
+		buyForm.appendChild(sendBtn);
+		sendBtn.addEventListener("click", async function(){		
+			//pop up metamask
+			const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+			const account = accounts[0];  //this is the active connected account in metamask
+
+			//set up your Ethereum transaction
+			const transactionParameters = {
+				to: contract_address, //Required 
+				from: account,   //the account of the purchaser
+				value: web3.utils.toWei(theCost, 'ether'),  
+				data: contract.methods.purchaseToken(tokenID).encodeABI() //make call to NFT smart contract 
+			};
+			
+			await window.ethereum
+			.request({
+				method: 'eth_sendTransaction',
+				params: [transactionParameters],
+			})
+			.then((result) => {
+				//return a transaction hash (result)
+				buyDiv.style.display = 'none';
+				createSoldForm(cursorX, cursorY, tokenID);
+	 		})
+	 		.catch((error) => {
+				//Promise rejected with an error.
+				console.log(error)
+	 		});
+			coverDiv.style.display = "none";
+		});
+
+		buyForm.appendChild(sendBtn);
+		buyDiv.appendChild(buyForm);
+		document.getElementById('masterdiv').appendChild(buyDiv);
+		buyDiv.style.display = "block"    //show the purchase form	
+	}
+
+	var isCopied = 'false';
+	function createSoldForm(myX, myY, myID){
+		var px = myX - 180;
+		var py = myY - 670;	
+
+		var soldDiv = document.createElement('div');
+		soldDiv.id = 'solddiv';
+		soldDiv.style.left = px.toString() + 'px';
+		soldDiv.style.marginTop = py.toString() + 'px';
+
+		//create the input form
+		var soldForm = document.createElement('form');
+	 	soldForm.className = 'form-container';
+		//keep the form from reloading the page
+		soldForm.addEventListener('submit', handleForm);
+		function handleForm(event) { 
+			event.preventDefault();
+		} 
+
+		//create the close button
+		var closeBtn2 = document.createElement('button');
+		closeBtn2.id = 'btnclose2';
+		closeBtn2.innerText = "X";
+		closeBtn2.onclick = function() {
+			if (isCopied == 'true'){
+  				soldDiv.style.display = "none";
+				coverDiv.style.display = "none";
+				switch (theType) {
+				case 1: document.getElementById('btnone').click();;
+				break;
+				case 2: document.getElementById('btntwo').click();;
+				break;
+				case 3: document.getElementById('btnthree').click();;
+				break;
+				}
+			} else {alert('Copy the metadata link before exiting');}
+		}
+		soldForm.appendChild(closeBtn2);		
+
+		//create label at top of form
+		soldForm.appendChild (document.createElement("br"));
+		var soldLabel = document.createElement('label');
+		soldLabel.className = 'initlabel3';
+		soldLabel.innerHTML = 'Purchase Complete';
+		soldLabel.style.fontSize = "22px";
+		soldLabel.style.fontWeight = '700';
+		soldLabel.style.color = '#30b11f';
+		soldForm.appendChild(soldLabel);
+		soldForm.appendChild (document.createElement("br"));
+		soldForm.appendChild (document.createElement("br"));
+
+		var soldLabel2 = document.createElement('label');
+		soldLabel2.className = 'initlabel2';
+		soldLabel2.innerHTML = 'What did you buy and where is it?';
+		soldLabel2.style.fontSize = "17px";
+		soldLabel2.style.fontWeight = '600';
+		soldForm.appendChild(soldLabel2);
+
+		soldForm.appendChild (document.createElement("br"));
+		soldForm.appendChild (document.createElement("br"));
+
+		// Create description and link to detailed instructions
+		var soldDesc = document.createTextNode('Your user account is now the owner of this NFT on the Polygon blockchain.  Click Verify NFT for details.' +
+		' The purchased asset and supporting documents are contained in metadata stored in the IPFS distributed file system.' +
+		' Copy the metadata link below and paste into a browser.  To download your files:')
+
+		soldSpan = document.createElement('span');
+		soldSpan.appendChild(soldDesc);
+		soldForm.appendChild(soldSpan);
+		
+		//create label that is the link to 'details' pdf document on ipfs
+		var linkLabel = document.createElement('label');
+		linkLabel.innerHTML = ' See Details';
+		linkLabel.style.color = 'blue';
+		linkLabel.style.fontWeight = 520;
+		linkLabel.onclick = function() {
+			window.open(ipfs_gateway + 'QmZnZWrvJ7jhVgwJCXQzV5B9MZ4JPdY5chWUpU2ZesDGD4');
+		}
+		soldForm.appendChild(linkLabel);
+		soldForm.appendChild (document.createElement("br"));
+		soldForm.appendChild (document.createElement("br"));
+		soldForm.appendChild (document.createElement("br"));
+		soldForm.appendChild (document.createElement("br"));
+
+		//create metadata link and 'copy link' button
+		var metaLink = document.createElement('input');
+		metaLink.id = 'metalink';
+		metaLink.setAttribute('type', 'text');
+		getMetalink(myID);  //sets the value
+		soldForm.appendChild(metaLink);
+
+		var copyLinkBtn = document.createElement('button');
+		copyLinkBtn.innerHTML = 'Copy Link';
+		copyLinkBtn.id = 'copylinkbtn';
+		copyLinkBtn.onclick = function() {
+  			metaLink.select();
+			metaLink.setSelectionRange(0, 99999);
+			navigator.clipboard.writeText(metaLink.value);
+			isCopied = 'true';
+		}
+		soldForm.appendChild(copyLinkBtn);
+
+		soldDiv.appendChild(soldForm);
+		document.getElementById('masterdiv').appendChild(soldDiv);
+		soldDiv.style.display = "block"    //show the purchase completed form
+	}
+
+	function getMetalink(theID){
+        contract.methods.getTokens(theType).call(function(error, result){
+		    if(!error) {
+				var firstArray = result.split('||');
+			    for (var i = 0; i < firstArray.length; i++) {    
+				    var secondArray = firstArray[i].split('|'); 
+					if(secondArray[3] == theID){
+						document.getElementById('metalink').value = 'https://blocklagoon.mypinata.cloud/ipfs/' + secondArray[0].substr(7, secondArray[0].length - 7);
+						break;
+					}	
+                } 						
+			} else {console.log(error)}
+		});
+	}
+
+	function setCost(type, priceMatic, priceEth, theUSD){
+		var x = theUSD/priceMatic;
+		if (type == 'dollar'){
+			var y = priceMatic/priceEth;
+			var xy = x * y;
+			var z = xy/3;
+			var bb = xy + z;
+			var gg = Number(bb).toFixed(6);
+			return (gg).toString();
+		} else if (type == 'matic'){
+			return Number(x).toFixed(2);
+		}
+	}
+
+	//abbreviate the creator address
+	function setcreator(inCreator){
+		var newCreator;
+		newCreator = inCreator.substr(0, 6) + "......" + inCreator.substr(inCreator.length - 4, inCreator.length);
+		return newCreator;
+	}
+
+    function drawImg(unt, theID){
+        var canv = document.createElement('canvas');
+		canv.className = 'imagecanvas';
+		canv.width = 300;
+		canv.height = 280;
+		var context = canv.getContext('2d');
+		var imageObj = new Image();
+		imageObj.src = sourceFiles3[unt];
+		var fitImageOn = function(canv, imageObj) {
+			var imageAspectRatio = imageObj.width / imageObj.height;
+			var canvasAspectRatio = canv.width / canv.height;
+			var renderableHeight, renderableWidth, xStart, yStart;
+
+			//If image's aspect ratio is less than canvas's then fit on height and place the image centrally along width
+			if(imageAspectRatio < canvasAspectRatio) {
+				renderableHeight = canv.height;
+				renderableWidth = imageObj.width * (renderableHeight / imageObj.height);
+				xStart = (canv.width - renderableWidth) / 2;
+				yStart = 0;
+			}
+			//If image's aspect ratio is greater than canvas's then fit on width and place the image centrally along height
+			else if (imageAspectRatio > canvasAspectRatio) {
+				renderableWidth = canv.width
+				renderableHeight = imageObj.height * (renderableWidth / imageObj.width);
+				xStart = 0;
+				yStart = (canv.height - renderableHeight) / 2;
+			}
+			//keep aspect ratio of original
+			else {
+				renderableHeight = canv.height;
+				renderableWidth = canv.width;
+				xStart = 0;
+				yStart = 0;
+			}
+			context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
+		};
+
+		imageObj.onload = function() {
+			fitImageOn(canv, imageObj)
+		};
+		document.getElementById(theID).appendChild(canv);
+    }
+
+	function drawArt(wok, theID){
+		var canv = document.createElement('canvas');
+		canv.className = 'audiocanvas';
+		var ctx = canv.getContext('2d');
+        var img = new Image(); 
+
+        if(sourceArt1[wok].indexOf('no artwork') == -1){  //filter out any having 'no artwork' value
+            img.src = sourceArt1[wok];
+        } else {
+			//the location on ipfs of the noArt image
+            img.src = ipfs_gateway + 'QmdbAEmsfWiJtPr9LgaHW8wsJCBuKGWGSxRuQ89MfdWpB2';
+		}
+		img.onload = function() {
+			ctx.drawImage(img, 0, 0, img.width,    img.height, 0, 0, canv.width, canv.height);
+		};
+		
+		document.getElementById(theID).appendChild(canv);
+	}
+
+	async function get_metadata(myfs, CID){
+		for await (const insp_rec of myfs.cat(CID)) {
+			const jsonObj = await JSON.parse(insp_rec);
+			//return jsonObj;
+			var obj_attributes = {
+				Name: jsonObj.name,
+				Description: jsonObj.description,
+				Image: jsonObj.image,
+				Created: jsonObj.created,
+				Creator: jsonObj.creator,
+                Artwork: jsonObj.artwork,
+                Copyright: jsonObj.copyright,
+				Watermark: jsonObj.watermark,
+				Animation: jsonObj.animation_url,
+				Edition: jsonObj.edition
+			};
+			return obj_attributes;	
+		}
+	}
+	
+    //creates an IFPS instance
+	async function createIpfs(){
+		const ipfs = await Ipfs.create();
+		return ipfs;
+	}
+	
+	//async function that will await for getOwner function to complete before continuing
+	async function setPages(index, myres, front, back1, myJsonArray, whichJson){
+		//runs the getOwner function
+		const result = await getOwner(myres);   //get owner of the tokenID
+		//get the sold NFTs
+		await contract.methods.getSold().call(function(error, result2){ 
+		    if(!error) {
+				var soldIDs = [...new Set(result2)]   //remove dups
+				soldArray2 = soldIDs;
+			} else {console.log(error)}
+		});
+
+		//front page
+		s1 = document.createTextNode('Name/ID:  ');
+		s2 = document.createTextNode(myJsonArray[index][0] + ' [' + myres + ']');
+		span1 = document.createElement('span');
+		span2 = document.createElement('span');
+		span1.style.fontSize = "15px";
+		span2.style.fontSize = "15px";
+		span1.style.fontWeight = '700';
+		span2.style.fontWeight = '700';
+		span2.style.color = 'blue';
+		span1.appendChild(s1);
+		span2.appendChild(s2);
+		front.appendChild(span1);
+		front.appendChild(span2);
+		front.appendChild (document.createElement("br"));
+
+		s1a = document.createTextNode('Collection:  ');
+		s2a = document.createTextNode('Block_Lagoon');
+		span1a = document.createElement('span');
+		span2a = document.createElement('span');
+		span1a.style.fontSize = "15px";
+		span2a.style.fontSize = "15px";
+		span1a.style.fontWeight = '700';
+		span1a.appendChild(s1a);
+		span2a.appendChild(s2a);
+		front.appendChild(span1a);
+		front.appendChild(span2a);
+		front.appendChild (document.createElement("br"));
+
+		s3 = document.createTextNode('Creator:  ');
+		s4 = document.createTextNode('BlockLagoon');
+		//s4 = document.createTextNode(setcreator(myJsonArray[index][3]));
+		span3 = document.createElement('span');
+		span4 = document.createElement('span');
+		span3.style.fontSize = "15px";
+		span4.style.fontSize = "15px";
+		span3.style.fontWeight = '700';
+		span3.appendChild(s3);
+		span4.appendChild(s4);
+		front.appendChild(span3);
+		front.appendChild(span4);
+		front.appendChild (document.createElement("br"));
+
+		s3a = document.createTextNode('Owner:  ');
+		s4a = document.createTextNode(setcreator(result));
+		span3a = document.createElement('span');
+		span4a = document.createElement('span');
+		span3a.style.fontSize = "15px";
+		span4a.style.fontSize = "15px";
+		span3a.style.fontWeight = '700';
+		span3a.appendChild(s3a);
+		span4a.appendChild(s4a);
+					
+		front.appendChild(span3a);
+		front.appendChild(span4a);
+		front.appendChild (document.createElement("br"));
+
+		s5 = document.createTextNode('Date Created:  ');
+		s6 = document.createTextNode(myJsonArray[index][2]);
+		span5 = document.createElement('span');
+		span6 = document.createElement('span');
+		span5.style.fontWeight = '700';
+		span5.style.fontSize = "15px";
+		span6.style.fontSize = "15px";
+		span5.appendChild(s5);
+		span6.appendChild(s6);
+		front.appendChild(span5);
+		front.appendChild(span6);
+		front.appendChild (document.createElement("br"));
+
+		s5a = document.createTextNode('Edition:  ');
+		s6a = document.createTextNode('sold out');
+		//manage sold vs for sale status of nft
+		var gx = myJsonArray[index][5];
+		var bind = gx.indexOf('/');
+		var ed1 = gx.substring(0, bind);
+		var ed2 = gx.substr(bind+1, gx.length - bind);
+		//console.log(ed1 + '/' + ed2)
+		if (ed1 == ed2 && gx != '1/1'){
+			s6a = document.createTextNode('sold out');
+			document.getElementById('buy' + myres).style.visibility = 'hidden';
+		} else if (gx == '1/1'){
+			s6a = document.createTextNode(single(myres, gx));
+		} else {
+			s6a = document.createTextNode(gx + ' - for sale');	
+		}
+
+
+		span5a = document.createElement('span');
+		span6a = document.createElement('span');
+		span5a.style.fontSize = "15px";
+		span6a.style.fontSize = "15px";
+		span5a.style.fontWeight = '700';
+		span5a.appendChild(s5a);
+		span6a.appendChild(s6a);
+		front.appendChild(span5a);
+		front.appendChild(span6a);
+		front.appendChild (document.createElement("br"));
+
+		if (whichJson == 3) {
+			front.style.marginTop = '-15px';
+		} else if (whichJson == 2) {
+			front.style.marginTop = '215px';
+		} else if (whichJson == 1) {
+			front.style.marginTop = '8px';
+		}
+		front.style.lineHeight = 1.4;
+		front.style.marginLeft = '15px';
+
+		//back page
+		s7 = document.createTextNode('NFT Description:');
+		s8 = document.createTextNode(myJsonArray[index][1]);
+		span7 = document.createElement('span');
+		span8 = document.createElement('span');
+		span7.style.fontSize = "15px";
+		span8.style.fontSize = "15px";
+		span7.style.fontWeight = '700';
+		span7.appendChild(s7);
+		span8.appendChild(s8);
+		back1.appendChild(span7);
+		back1.appendChild (document.createElement("br"));
+		back1.appendChild(span8);
+		back1.appendChild (document.createElement("br"));
+		back1.appendChild (document.createElement("br"));
+
+		s9 = document.createTextNode('About the Artist:');
+		//add the artist image and bio
+		var artist_img = document.createElement('img');
+
+		// BlockLagoon
+		s10 = document.createTextNode('BlockLagoon DAO is a group of engineers, artists, and visionaries that are bringing ' +
+			'clarity and professionalism to the NFT experience.  Our tools allow creators to create, manage, and sell their ' +
+			'unique and respsonsibly crafted NFTs to an audience of collectors who seek the highest quality audited and documented NFTs.')
+
+			//add the artist image
+			artist_img.src = ipfs_gateway + 'QmbB2digjQFHHUB8EkemySXVN5nJyeHVqreHJRgM7hm7E2';
+
+		span9 = document.createElement('span');
+		span10 = document.createElement('span');
+		span9.style.fontSize = "14px";
+		span10.style.fontSize = "14px";
+		span9.style.fontWeight = '700';
+		span9.appendChild(s9);
+		span10.appendChild(s10);
+		back1.appendChild(span9);
+		back1.appendChild(artist_img);
+		back1.appendChild(span10);
+		back1.style.lineHeight = 1.1;
+		back1.style.marginLeft = '15px';
+		back1.style.marginRight = '10px';
+		back1.style.marginTop = '-30px';
+	}
+	
+	function single(theres, bx){
+		if(soldArray2.includes(theres.toString())){
+			document.getElementById('buy' + theres).style.visibility = 'hidden';
+			return 'sold out'
+		} else {return bx + ' - for sale'}
+	}
+
+	//creates an IFPS instance
+	async function createIpfs(){
+		const ipfs = await Ipfs.create();
+		return ipfs;
+	}
+
+	function theABI() {
+		const contract_abi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "approved",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ApprovalForAll",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "audioTokens",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "baseURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "burners",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "myCID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "myName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "myEdition",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "nft_type",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "user_acct",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "txHash",
+				"type": "string"
+			}
+		],
+		"name": "createCID",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "theURI",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"name": "createNFT",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getApproved",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBurners",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "myToken",
+				"type": "uint256"
+			}
+		],
+		"name": "getOwner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getSold",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "nft_type",
+				"type": "uint256"
+			}
+		],
+		"name": "getTokens",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "imageTokens",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "myBaseURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "ownerOf",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "purchaseToken",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "key",
+				"type": "uint256"
+			}
+		],
+		"name": "returnTokenPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "baseURI",
+				"type": "string"
+			}
+		],
+		"name": "setBaseURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "soldTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "theburn",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tokenCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenIdToPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenOfOwnerByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from_add",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to_add",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferToken",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "videoTokens",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+    return contract_abi;
+	}	
+</script>  
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFT Creators Portal</title>
+    <link rel="stylesheet" type="text/css" href="./src/styles/index.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <script type="https://cdn.jsdelivr.net/npm/web3-utils@1.6.1/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ipfs@0.55.2/dist/index.min.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+    <script src="./src/web3/contract_abi.json"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  </head>
+
+  <div>
+    <!--Header-->
+    <img src="https://blocklagoon.mypinata.cloud/ipfs/QmcZUjA58snKkBdi7PKTx9sZaKKkyJJxno4a8JR228v5h1" class="theheader"/>
+    <!--tab control-->
+    <div class="tab">
+      <button class="tablinks" id="btnone" onclick="openNFT(event, 1)">Audio NFTs</button>
+      <button class="tablinks" id="btntwo" onclick="openNFT(event, 2)">Video NFTs</button>
+      <button class="tablinks" id="btnthree" onclick="openNFT(event, 3)">Image NFTs</button>
+    </div>
+    <div id="tab2">
+      <span>
+        <p class="polygon_style">All NFTs are hosted in<strong>audited</strong>smart contracts on the
+          <strong>Polygon</strong>blockchain.
+          <button id="btnmeta" onclick="openMeta()">Metaverse</button>
+          <button id="btnhelp" onclick="openHelp()">Help</button>
+        </p>
+      </span>
+    </div>
+
+    <div id="masterdiv">
+      <p style="text-indent: 60px; color: goldenrod" ;>
+        &nbsp &nbsp &nbsp &nbsp Select an NFT type to display
+      </p>
+    </div>
+
+    <div id="1" class="tabcontent"></div>
+    <div id="2" class="tabcontent"></div>
+    <div id="3" class="tabcontent"></div>
+  </div>
+
+  <script type="text/javascript" src="./src/index.js"></script>
+</html>

@@ -17,5 +17,5 @@ https://blocklagoon.mypinata.cloud/ipfs/QmW7DyKHEuXs3rZF9KP1CFgon8Fkf7H21ZHsNTjx
 * IPFS
 * Pinata
 
-![image](greek_god.png)
+![image](/images/greek_god.png)
 
